@@ -34,7 +34,7 @@ export class NavMenu extends Component<INavMenuProps, NavMenuState> {
         >
           <Container>
             <NavbarBrand tag={Link} to='/'>
-              EventSource
+              Event Sourcing Demo
             </NavbarBrand>
             <NavbarToggler onClick={this.toggleNavbar} className='mr-2' />
             <Collapse
@@ -50,12 +50,12 @@ export class NavMenu extends Component<INavMenuProps, NavMenuState> {
                 </NavItem>
                 <NavItem>
                   <NavLink tag={Link} className='text-dark' to='/counter'>
-                    Counter
+                    Events
                   </NavLink>
                 </NavItem>
                 <NavItem>
                   <NavLink tag={Link} className='text-dark' to='/fetch-data'>
-                    Fetch data
+                    Projections
                   </NavLink>
                 </NavItem>
               </ul>

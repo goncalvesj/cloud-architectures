@@ -30,7 +30,7 @@ namespace EventSourcing.Functions
             var eventProjectionsTable = tableClient.GetTableReference("EventProjectionsTable");
             eventProjectionsTable.CreateIfNotExists();
 
-            var linqQuery = eventStoreTable.CreateQuery<EventStoreEntity>().ToList();
+            var linqQuery = eventStoreTable.CreateQuery<TableEntities.EventStoreEntity>().ToList();
 
             var partitions = linqQuery.GroupBy(x => x.PartitionKey).Select(x => x.Key);
 
@@ -43,7 +43,7 @@ namespace EventSourcing.Functions
                     .Where(x => x.PartitionKey == partition)
                     .OrderBy(x => x.Timestamp);
 
-                var entity = ProjectionService.CreateConferenceProjection(eventProjectionsTable, new Message { Stream = "Conference", Id = partition }, events);
+                var entity = ProjectionService.CreateConferenceProjection(eventProjectionsTable, new QueueEntities.Message { Stream = "Conference", Id = partition }, events);
 
                 conferenceList.Add(JsonConvert.DeserializeObject<ConferenceDataModel>(entity.Payload));
 
@@ -52,7 +52,7 @@ namespace EventSourcing.Functions
                 await eventProjectionsTable.ExecuteAsync(insertOrMergeOperation);
             }
 
-            var allConferences = new EventProjectionsEntity
+            var allConferences = new TableEntities.EventProjectionsEntity
             {
                 PartitionKey = "LookUps",
                 RowKey = "AllConferences",

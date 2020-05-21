@@ -18,7 +18,7 @@ namespace EventSourcing.Functions
         {
             log.LogInformation($"C# Queue trigger function processed: {myQueueItem}");
 
-            var message = JsonConvert.DeserializeObject<Message>(myQueueItem);
+            var message = JsonConvert.DeserializeObject<QueueEntities.Message>(myQueueItem);
 
             var storageAccount = CloudStorageAccount.DevelopmentStorageAccount;
             var tableClient = storageAccount.CreateCloudTableClient(new TableClientConfiguration());
@@ -29,7 +29,7 @@ namespace EventSourcing.Functions
             var eventProjectionsTable = tableClient.GetTableReference("EventProjectionsTable");
             eventProjectionsTable.CreateIfNotExists();
 
-            var linqQuery = eventStoreTable.CreateQuery<EventStoreEntity>()
+            var linqQuery = eventStoreTable.CreateQuery<TableEntities.EventStoreEntity>()
                 .Where(x => x.PartitionKey == message.Id && x.RowKey == message.SequenceNumber)
                 .ToList();
 

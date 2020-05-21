@@ -9,9 +9,9 @@ namespace EventSourcing.Functions
 {
     public static class ProjectionService
     {
-        public static async Task<EventProjectionsEntity> CreateLookUpProjectionAsync(CloudTable eventProjectionsTable)
+        public static async Task<TableEntities.EventProjectionsEntity> CreateLookUpProjectionAsync(CloudTable eventProjectionsTable)
         {
-            var allConferences = new EventProjectionsEntity
+            var allConferences = new TableEntities.EventProjectionsEntity
             {
                 PartitionKey = "LookUps",
                 RowKey = "AllConferences",
@@ -22,13 +22,13 @@ namespace EventSourcing.Functions
 
             var result = await eventProjectionsTable.ExecuteAsync(insertOrMergeOperation);
 
-            return result.Result as EventProjectionsEntity;
+            return result.Result as TableEntities.EventProjectionsEntity;
         }
 
-        public static async Task UpdateConferenceLookUpProjectionAsync(CloudTable eventProjectionsTable, EventStoreEntity entity)
+        public static async Task UpdateConferenceLookUpProjectionAsync(CloudTable eventProjectionsTable, TableEntities.EventStoreEntity entity)
         {
             var projection = eventProjectionsTable
-                .CreateQuery<EventProjectionsEntity>()
+                .CreateQuery<TableEntities.EventProjectionsEntity>()
                 .Where(x => x.PartitionKey == "LookUps" && x.RowKey == "AllConferences")
                 .Select(x => x)
                 .SingleOrDefault() ?? await CreateLookUpProjectionAsync(eventProjectionsTable);
@@ -61,13 +61,13 @@ namespace EventSourcing.Functions
             await eventProjectionsTable.ExecuteAsync(insertOrMergeOperation);
         }
 
-        public static EventProjectionsEntity CreateConferenceProjection(CloudTable eventProjectionsTable, Message message, IEnumerable<EventStoreEntity> list)
+        public static TableEntities.EventProjectionsEntity CreateConferenceProjection(CloudTable eventProjectionsTable, QueueEntities.Message message, IEnumerable<TableEntities.EventStoreEntity> list)
         {
             var projection = eventProjectionsTable
-                .CreateQuery<EventProjectionsEntity>()
+                .CreateQuery<TableEntities.EventProjectionsEntity>()
                 .Where(x => x.PartitionKey == "Conference" && x.RowKey == message.Id)
                 .Select(x => x)
-                .SingleOrDefault() ?? new EventProjectionsEntity(message.Stream, message.Id);
+                .SingleOrDefault() ?? new TableEntities.EventProjectionsEntity(message.Stream, message.Id);
 
             var dataModel = !string.IsNullOrEmpty(projection.Payload)
             ? JsonConvert.DeserializeObject<ConferenceDataModel>(projection.Payload)
@@ -96,7 +96,7 @@ namespace EventSourcing.Functions
                 }
             }
 
-            var entity = new EventProjectionsEntity(message.Stream, message.Id)
+            var entity = new TableEntities.EventProjectionsEntity(message.Stream, message.Id)
             {
                 LastSequenceRun = lastSequenceRun,
                 Payload = JsonConvert.SerializeObject(dataModel)

@@ -12,7 +12,7 @@ namespace EventSourcing.Services
 {
     public interface IConferenceService
     {
-        Task<EventStoreEntity> InsertEntityAsync(string streamId, string sequence, ConferenceModel model);
+        Task<TableEntities.EventStoreEntity> InsertEntityAsync(string streamId, string sequence, ConferenceModel model);
         Task InsertQueueMessageAsync(string streamId, string sequenceNumber);
         string GetConferenceId(ConferenceModel model);
         string GetNext(string eventStream);
@@ -46,9 +46,9 @@ namespace EventSourcing.Services
             _queue.CreateIfNotExists();
         }
 
-        public async Task<EventStoreEntity> InsertEntityAsync(string streamId, string sequence, ConferenceModel model)
+        public async Task<TableEntities.EventStoreEntity> InsertEntityAsync(string streamId, string sequence, ConferenceModel model)
         {
-            var entity = new EventStoreEntity(streamId, sequence)
+            var entity = new TableEntities.EventStoreEntity(streamId, sequence)
             {
                 EventType = model.Event,
                 Payload = JsonConvert.SerializeObject(model.Data)
@@ -57,12 +57,12 @@ namespace EventSourcing.Services
             var insertOrMergeOperation = TableOperation.Insert(entity);
 
             var result = await _eventStoreTable.ExecuteAsync(insertOrMergeOperation);
-            return result.Result as EventStoreEntity;
+            return result.Result as TableEntities.EventStoreEntity;
         }
 
         public async Task InsertQueueMessageAsync(string streamId, string sequenceNumber)
         {
-            var message = JsonConvert.SerializeObject(new Message { Stream = "Conference", Id = streamId, SequenceNumber = sequenceNumber }, Formatting.None);
+            var message = JsonConvert.SerializeObject(new QueueEntities.Message { Stream = "Conference", Id = streamId, SequenceNumber = sequenceNumber }, Formatting.None);
             var data = Encoding.ASCII.GetBytes(message);
             var base64Encoded = Convert.ToBase64String(data);
 
@@ -78,7 +78,7 @@ namespace EventSourcing.Services
 
         public string GetNext(string eventStream)
         {
-            var last = _eventStoreTable.CreateQuery<EventStoreEntity>()
+            var last = _eventStoreTable.CreateQuery<TableEntities.EventStoreEntity>()
                 .Where(x => x.PartitionKey == eventStream)
                 .Select(x => new { Key = int.Parse(x.RowKey) })
                 .ToList()
@@ -93,7 +93,7 @@ namespace EventSourcing.Services
 
         public int GetAvailableSeats(string conferenceId)
         {
-            var linqQuery = _eventProjectionsTable.CreateQuery<EventProjectionsEntity>()
+            var linqQuery = _eventProjectionsTable.CreateQuery<TableEntities.EventProjectionsEntity>()
                 .Where(x => x.PartitionKey == "Conference" && x.RowKey == conferenceId)
                 .Select(x => x.Payload)
                 .SingleOrDefault();
@@ -105,7 +105,7 @@ namespace EventSourcing.Services
 
         public ConferenceDataModel GetConferenceDetails(string conferenceId)
         {
-            var linqQuery = _eventProjectionsTable.CreateQuery<EventProjectionsEntity>()
+            var linqQuery = _eventProjectionsTable.CreateQuery<TableEntities.EventProjectionsEntity>()
                 .Where(x => x.PartitionKey == "Conference" && x.RowKey == conferenceId)
                 .Select(x => x.Payload)
                 .SingleOrDefault();
@@ -117,7 +117,7 @@ namespace EventSourcing.Services
 
         public List<ConferenceDataModel> GetAllConferences()
         {
-            var linqQuery = _eventProjectionsTable.CreateQuery<EventProjectionsEntity>()
+            var linqQuery = _eventProjectionsTable.CreateQuery<TableEntities.EventProjectionsEntity>()
                 .Where(x => x.PartitionKey == "LookUps" && x.RowKey == "AllConferences")
                 .Select(x => x.Payload)
                 .SingleOrDefault();

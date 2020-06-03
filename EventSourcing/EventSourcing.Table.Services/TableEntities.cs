@@ -1,6 +1,6 @@
 ﻿using Microsoft.Azure.Cosmos.Table;
 
-namespace EventSourcing.Common
+namespace EventSourcing.Table.Services
 {
     public class TableEntities
     {

@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Net.Mime;
-using EventSourcing.Common;
-using EventSourcing.Services;
-using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
+﻿using EventSourcing.Common;
+using EventSourcing.CosmosDb.Services;
+using EventSourcing.Table.Services;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Net.Mime;
+using System.Threading.Tasks;
 
 namespace EventSourcing.Controllers
 {
@@ -12,10 +13,10 @@ namespace EventSourcing.Controllers
     [Route("[controller]")]
     public class ConferenceController : ControllerBase
     {
-        private readonly IConferenceService _conferenceService;
+        private readonly ITableConferenceService _conferenceService;
         private readonly IConferenceCosmosDbService _conferenceCosmosDbService;
 
-        public ConferenceController(IConferenceService conferenceService, IConferenceCosmosDbService conferenceCosmosDbService)
+        public ConferenceController(ITableConferenceService conferenceService, IConferenceCosmosDbService conferenceCosmosDbService)
         {
             _conferenceService = conferenceService;
             _conferenceCosmosDbService = conferenceCosmosDbService;
@@ -26,7 +27,7 @@ namespace EventSourcing.Controllers
         {
             //return Ok(_conferenceService.GetAllConferences());
 
-            var service = new ProjectionService();
+            var service = new CosmosDbProjectionService();
 
             return await service.GetAllConferences();
         }
@@ -57,7 +58,7 @@ namespace EventSourcing.Controllers
         [HttpPatch]
         public async Task<IActionResult> Patch(string streamId)
         {
-            var service = new ProjectionService();
+            var service = new CosmosDbProjectionService();
 
             await service.CreateConferenceProjection(streamId);
             //if (model == null || string.IsNullOrEmpty(model.Data.Id)) return BadRequest();

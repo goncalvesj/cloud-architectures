@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EventSourcing.Common;
 using Microsoft.Azure.Cosmos;
-using Newtonsoft.Json;
 
-namespace EventSourcing.Services
+namespace EventSourcing.CosmosDb.Services
 {
-    public class ProjectionService
+    public class CosmosDbProjectionService
     {
         private const string CosmosDatabaseId = "EventSourcing";
         private const string ContainerId = "data";
@@ -17,7 +15,7 @@ namespace EventSourcing.Services
 
         private readonly Container _container;
 
-        public ProjectionService()
+        public CosmosDbProjectionService()
         {
             var client = new CosmosClient(Endpoint, AuthKey);
             _container = client.GetContainer(CosmosDatabaseId, ContainerId);

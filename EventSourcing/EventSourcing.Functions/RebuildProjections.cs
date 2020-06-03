@@ -1,13 +1,9 @@
-using EventSourcing.Common;
+using EventSourcing.Table.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace EventSourcing.Functions
@@ -21,47 +17,7 @@ namespace EventSourcing.Functions
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
-            var storageAccount = CloudStorageAccount.DevelopmentStorageAccount;
-            var tableClient = storageAccount.CreateCloudTableClient(new TableClientConfiguration());
-
-            var eventStoreTable = tableClient.GetTableReference("EventStoreTable");
-            eventStoreTable.CreateIfNotExists();
-
-            var eventProjectionsTable = tableClient.GetTableReference("EventProjectionsTable");
-            eventProjectionsTable.CreateIfNotExists();
-
-            var linqQuery = eventStoreTable.CreateQuery<TableEntities.EventStoreEntity>().ToList();
-
-            var partitions = linqQuery.GroupBy(x => x.PartitionKey).Select(x => x.Key);
-
-            var conferenceList = new List<ConferenceDataModel>();
-            TableOperation insertOrMergeOperation;
-
-            foreach (var partition in partitions)
-            {
-                var events = linqQuery
-                    .Where(x => x.PartitionKey == partition)
-                    .OrderBy(x => x.Timestamp);
-
-                var entity = ProjectionService.CreateConferenceProjection(eventProjectionsTable, new QueueEntities.Message { Stream = "Conference", Id = partition }, events);
-
-                conferenceList.Add(JsonConvert.DeserializeObject<ConferenceDataModel>(entity.Payload));
-
-                insertOrMergeOperation = TableOperation.InsertOrReplace(entity);
-
-                await eventProjectionsTable.ExecuteAsync(insertOrMergeOperation);
-            }
-
-            var allConferences = new TableEntities.EventProjectionsEntity
-            {
-                PartitionKey = "LookUps",
-                RowKey = "AllConferences",
-                Payload = JsonConvert.SerializeObject(conferenceList)
-            };
-
-            insertOrMergeOperation = TableOperation.InsertOrReplace(allConferences);
-
-            await eventProjectionsTable.ExecuteAsync(insertOrMergeOperation);
+            await new TableProjectionService().RebuildProjections();
 
             return new OkObjectResult("");
         }

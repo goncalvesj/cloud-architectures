@@ -1,16 +1,17 @@
-﻿using EventSourcing.Common;
+﻿using Azure.Storage.Queues;
+using EventSourcing.Common;
+using Microsoft.Azure.Cosmos.Table;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Azure.Storage.Queues;
-using Microsoft.Azure.Cosmos.Table;
-using Newtonsoft.Json;
+using Formatting = Newtonsoft.Json.Formatting;
 
-namespace EventSourcing.Services
+namespace EventSourcing.Table.Services
 {
-    public interface IConferenceService
+    public interface ITableConferenceService
     {
         Task<TableEntities.EventStoreEntity> InsertEntityAsync(string streamId, string sequence, ConferenceModel model);
         Task InsertQueueMessageAsync(string streamId, string sequenceNumber);
@@ -21,7 +22,7 @@ namespace EventSourcing.Services
         List<ConferenceDataModel> GetAllConferences();
     }
 
-    public class ConferenceService : IConferenceService
+    public class TableConferenceService : ITableConferenceService
     {
         private readonly CloudTable _eventStoreTable;
         private readonly CloudTable _eventProjectionsTable;
@@ -31,7 +32,7 @@ namespace EventSourcing.Services
         private const string QueueConnectionString = "UseDevelopmentStorage=true";
         private const string QueueName = "eventsourcing-queue";
 
-        public ConferenceService()
+        public TableConferenceService()
         {
             var storageAccount = CloudStorageAccount.DevelopmentStorageAccount;
             var tableClient = storageAccount.CreateCloudTableClient(new TableClientConfiguration());

@@ -1,7 +1,8 @@
 ﻿using System;
+using EventSourcing.Common;
 using Newtonsoft.Json;
 
-namespace EventSourcing.Common
+namespace EventSourcing.CosmosDb.Services
 {
     public class CosmosEntities
     {

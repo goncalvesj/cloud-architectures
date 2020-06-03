@@ -1,4 +1,5 @@
-using EventSourcing.Services;
+using EventSourcing.CosmosDb.Services;
+using EventSourcing.Table.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -25,9 +26,9 @@ namespace EventSourcing
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             );
 
-            services.AddScoped<IConferenceService, ConferenceService>();
+            services.AddScoped<ITableConferenceService, TableConferenceService>();
 
-            services.AddScoped<IConferenceCosmosDbService, ConferenceCosmosDbService>();
+            services.AddScoped<IConferenceCosmosDbService, CosmosDbConferenceService>();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/build"; });

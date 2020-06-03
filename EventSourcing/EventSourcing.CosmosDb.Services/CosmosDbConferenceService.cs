@@ -1,20 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using EventSourcing.Common;
 using Microsoft.Azure.Cosmos;
-using Microsoft.Azure.Cosmos.Linq;
-using Newtonsoft.Json;
 
-namespace EventSourcing.Services
+namespace EventSourcing.CosmosDb.Services
 {
     public interface IConferenceCosmosDbService
     {
         Task<ItemResponse<CosmosEntities.ConferenceEntity>> InsertAsync(ConferenceModel model);
     }
 
-    public class ConferenceCosmosDbService : IConferenceCosmosDbService
+    public class CosmosDbConferenceService : IConferenceCosmosDbService
     {
         private const string CosmosDatabaseId = "EventSourcing";
         private const string ContainerId = "data";
@@ -23,7 +19,7 @@ namespace EventSourcing.Services
 
         private readonly Container _container;
 
-        public ConferenceCosmosDbService()
+        public CosmosDbConferenceService()
         {
             var client = new CosmosClient(Endpoint, AuthKey);
             _container = client.GetContainer(CosmosDatabaseId, ContainerId);

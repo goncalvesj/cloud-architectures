@@ -9,6 +9,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventSourcing.Functions", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventSourcing.Common", "EventSourcing.Common\EventSourcing.Common.csproj", "{D9268B36-4C02-42D2-A01A-C113DAF5ADBA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventSourcing.Table.Services", "EventSourcing.Table.Services\EventSourcing.Table.Services.csproj", "{55043003-898E-4664-ADA5-46FCC7EFB5DF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventSourcing.CosmosDb.Services", "EventSourcing.CosmosDb.Services\EventSourcing.CosmosDb.Services.csproj", "{FA0466DE-D3A8-47EC-81C6-A2ECE6E7E154}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{D9268B36-4C02-42D2-A01A-C113DAF5ADBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9268B36-4C02-42D2-A01A-C113DAF5ADBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D9268B36-4C02-42D2-A01A-C113DAF5ADBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55043003-898E-4664-ADA5-46FCC7EFB5DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55043003-898E-4664-ADA5-46FCC7EFB5DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55043003-898E-4664-ADA5-46FCC7EFB5DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55043003-898E-4664-ADA5-46FCC7EFB5DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA0466DE-D3A8-47EC-81C6-A2ECE6E7E154}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA0466DE-D3A8-47EC-81C6-A2ECE6E7E154}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA0466DE-D3A8-47EC-81C6-A2ECE6E7E154}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA0466DE-D3A8-47EC-81C6-A2ECE6E7E154}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

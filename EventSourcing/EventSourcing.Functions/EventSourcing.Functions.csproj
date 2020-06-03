@@ -4,12 +4,12 @@
     <AzureFunctionsVersion>v3</AzureFunctionsVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Azure.Cosmos.Table" Version="1.0.7" />
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Storage" Version="3.0.11" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.7" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EventSourcing.Common\EventSourcing.Common.csproj" />
+    <ProjectReference Include="..\EventSourcing.Table.Services\EventSourcing.Table.Services.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">

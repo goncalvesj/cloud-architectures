@@ -15,7 +15,6 @@
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.4" />
     <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.8.0" />
     <PackageReference Include="Microsoft.Azure.Cosmos.Table" Version="1.0.7" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Cosmos" Version="3.1.4" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.4.1" />
   </ItemGroup>
 
@@ -28,6 +27,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EventSourcing.Common\EventSourcing.Common.csproj" />
+    <ProjectReference Include="..\EventSourcing.CosmosDb.Services\EventSourcing.CosmosDb.Services.csproj" />
+    <ProjectReference Include="..\EventSourcing.Table.Services\EventSourcing.Table.Services.csproj" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

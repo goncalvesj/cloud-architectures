@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace EventSourcing.Common
+﻿namespace EventSourcing.Common
 {
     public class ConferenceModel
     {

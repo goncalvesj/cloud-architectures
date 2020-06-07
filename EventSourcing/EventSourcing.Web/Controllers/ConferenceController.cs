@@ -1,13 +1,13 @@
-﻿using EventSourcing.Common;
+﻿using System.Collections.Generic;
+using System.Net.Mime;
+using System.Threading.Tasks;
+using EventSourcing.Common;
 using EventSourcing.CosmosDb.Services;
 using EventSourcing.Table.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Net.Mime;
-using System.Threading.Tasks;
 
-namespace EventSourcing.Controllers
+namespace EventSourcing.Web.Controllers
 {
     [ApiController]
     [Route("[controller]")]
@@ -96,7 +96,7 @@ namespace EventSourcing.Controllers
 
             //return Ok(insertedEntity);
 
-            return CreatedAtAction(nameof(Get), new { id = insertedEntity.Resource.Id }, insertedEntity.Resource);
+            return CreatedAtAction(nameof(Post), new { id = insertedEntity.Resource.Id }, insertedEntity.Resource);
 
             //var streamId = _conferenceService.GetConferenceId(model);
 

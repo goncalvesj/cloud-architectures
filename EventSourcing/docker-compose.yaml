@@ -1,0 +1,7 @@
+version: "3"
+
+services:
+  event-sourcing:
+    image: goncalvesj/event-sourcing:dev
+    ports:
+      - "8080:80"

@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventSourcing", "WebApp\EventSourcing.csproj", "{83176CA2-A873-4BB4-A917-46B1E2982410}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventSourcing.Functions", "EventSourcing.Functions\EventSourcing.Functions.csproj", "{5E28BD1B-3A7C-4912-9313-B88FA04CBF44}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventSourcing.Common", "EventSourcing.Common\EventSourcing.Common.csproj", "{D9268B36-4C02-42D2-A01A-C113DAF5ADBA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventSourcing.Table.Services", "EventSourcing.Table.Services\EventSourcing.Table.Services.csproj", "{55043003-898E-4664-ADA5-46FCC7EFB5DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventSourcing.Table.Services", "EventSourcing.Table.Services\EventSourcing.Table.Services.csproj", "{55043003-898E-4664-ADA5-46FCC7EFB5DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventSourcing.CosmosDb.Services", "EventSourcing.CosmosDb.Services\EventSourcing.CosmosDb.Services.csproj", "{FA0466DE-D3A8-47EC-81C6-A2ECE6E7E154}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventSourcing.CosmosDb.Services", "EventSourcing.CosmosDb.Services\EventSourcing.CosmosDb.Services.csproj", "{FA0466DE-D3A8-47EC-81C6-A2ECE6E7E154}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventSourcing.Web", "EventSourcing.Web\EventSourcing.Web.csproj", "{58DD0441-DC0F-45DD-B392-EA69E16C9017}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,10 +19,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{83176CA2-A873-4BB4-A917-46B1E2982410}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{83176CA2-A873-4BB4-A917-46B1E2982410}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{83176CA2-A873-4BB4-A917-46B1E2982410}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{83176CA2-A873-4BB4-A917-46B1E2982410}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5E28BD1B-3A7C-4912-9313-B88FA04CBF44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5E28BD1B-3A7C-4912-9313-B88FA04CBF44}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E28BD1B-3A7C-4912-9313-B88FA04CBF44}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,6 +35,10 @@ Global
 		{FA0466DE-D3A8-47EC-81C6-A2ECE6E7E154}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA0466DE-D3A8-47EC-81C6-A2ECE6E7E154}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA0466DE-D3A8-47EC-81C6-A2ECE6E7E154}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58DD0441-DC0F-45DD-B392-EA69E16C9017}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58DD0441-DC0F-45DD-B392-EA69E16C9017}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58DD0441-DC0F-45DD-B392-EA69E16C9017}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58DD0441-DC0F-45DD-B392-EA69E16C9017}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

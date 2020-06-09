@@ -109,7 +109,7 @@ namespace FederatedIdentity.Web.Controllers
             IList<Claim> claims = new List<Claim>();
             claims.Add(new Claim("name", Name, ClaimValueTypes.String, issuer));
             claims.Add(new Claim("email", ClubId, ClaimValueTypes.String, issuer));
-            claims.Add(new Claim("phone", "0858605466", ClaimValueTypes.String, issuer));
+            claims.Add(new Claim("phone", "", ClaimValueTypes.String, issuer));
 
             // Create the token
             var token = new JwtSecurityToken(

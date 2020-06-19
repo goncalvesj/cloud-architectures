@@ -1,0 +1,28 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - 'FederatedIdentity/FederatedIdentity.Web/*'
+env:
+  IMAGE_NAME: "goncalvesj/federated-identity:$(date +%s)"
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image
+      run: | 
+       cd FederatedIdentity/FederatedIdentity.Web
+       docker build . --file Dockerfile --tag $IMAGE_NAME
+      
+    - name: Docker Login
+      run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+    
+    - name: Docker Push
+      run: docker push $IMAGE_NAME

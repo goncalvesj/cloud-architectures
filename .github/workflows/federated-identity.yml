@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Federated Identity CI/CD
 
 on:
   push:

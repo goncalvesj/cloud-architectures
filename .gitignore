@@ -6,3 +6,4 @@
 /FederatedIdentity/FederatedIdentity.Web/bin/Debug/netcoreapp3.1
 /FederatedIdentity/FederatedIdentity.Web/obj
 /FederatedIdentity/.vs/FederatedIdentity
+*.user

@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
+using Azure.Identity;
+using Azure.Security.KeyVault.Certificates;
 using FederatedIdentity.Web.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -31,7 +33,8 @@ namespace FederatedIdentity.Web.Controllers
             // Sample: Load the certificate with a private key (must be pfx file)
             _signingCredentials = new Lazy<X509SigningCredentials>(() =>
             {
-                var certStore = new X509Store(StoreName.My, StoreLocation.CurrentUser);
+
+	            var certStore = new X509Store(StoreName.My, StoreLocation.CurrentUser);
                 certStore.Open(OpenFlags.ReadOnly);
                 var certCollection = certStore.Certificates.Find(
                     X509FindType.FindByThumbprint,
@@ -44,7 +47,7 @@ namespace FederatedIdentity.Web.Controllers
             });
         }
 
-        public IActionResult Index(string Name, string email, string phone)
+        public IActionResult Index(string email, string phone)
         {
             if (string.IsNullOrEmpty(email))
             {
@@ -52,7 +55,7 @@ namespace FederatedIdentity.Web.Controllers
                 return View();
             }
 
-            var token = BuildIdToken(Name, email);
+            var token = BuildIdToken(phone, email);
             var link = BuildUrl(token);
 
             //var Body = string.Empty;
@@ -86,7 +89,7 @@ namespace FederatedIdentity.Web.Controllers
             //    throw ex;
             //}
             ViewData["Link"] = link;
-            ViewData["Message"] = $"Email sent to {email}";
+            ViewData["Message"] = $"Email sent to {email}, {phone}";
             return View();
         }
 
@@ -101,15 +104,14 @@ namespace FederatedIdentity.Web.Controllers
             return View(new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
         }
 
-        private string BuildIdToken(string Name, string ClubId)
+        private string BuildIdToken(string phone, string email)
         {
             var issuer = $"{Request.Scheme}://{Request.Host}{Request.PathBase.Value}/";
 
             // All parameters send to Azure AD B2C needs to be sent as claims
             IList<Claim> claims = new List<Claim>();
-            claims.Add(new Claim("name", Name, ClaimValueTypes.String, issuer));
-            claims.Add(new Claim("email", ClubId, ClaimValueTypes.String, issuer));
-            claims.Add(new Claim("phone", "", ClaimValueTypes.String, issuer));
+            claims.Add(new Claim("email", email, ClaimValueTypes.String, issuer));
+            claims.Add(new Claim("strongAuthenticationPhoneNumber", phone, ClaimValueTypes.String, issuer));
 
             // Create the token
             var token = new JwtSecurityToken(

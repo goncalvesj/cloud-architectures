@@ -49,6 +49,9 @@ Selector labels
 {{- define "event-sourcing.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "event-sourcing.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
+{{- if .Values.aadpodidbinding }}
+aadpodidbinding: {{ .Values.aadpodidbinding }}
+{{- end }}
 {{- end -}}
 
 {{/*

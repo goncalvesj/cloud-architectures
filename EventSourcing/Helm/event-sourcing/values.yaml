@@ -8,6 +8,12 @@ image:
   repository: goncalvesj/event-sourcing
   pullPolicy: IfNotPresent
 
+aadpodidbinding: "goncalvesj-aks-agentpool"
+
+env:
+  - name: VAULT
+    value: myvault
+
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
@@ -61,9 +67,7 @@ resources: {}
   #   cpu: 100m
   #   memory: 128Mi
 
-nodeSelector: {
-  app: "event-sourcing"
-}
+nodeSelector: {}
 
 tolerations: []
 

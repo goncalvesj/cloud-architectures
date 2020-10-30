@@ -1,24 +1,29 @@
-﻿using System.Collections.Generic;
+﻿ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EventSourcing.Common;
 using Microsoft.Azure.Cosmos;
+using Microsoft.Extensions.Options;
 
 namespace EventSourcing.CosmosDb.Services
 {
-    public class CosmosDbProjectionService
+    public interface ICosmosDbProjectionService
     {
-        private const string CosmosDatabaseId = "EventSourcing";
-        private const string ContainerId = "data";
-        private const string Endpoint = "https://localhost:8081/";
-        private const string AuthKey = "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==";
+        Task CreateConferenceProjection(string streamId);
+        Task<List<ConferenceDataModel>> GetAllConferences();
+        Task<ConferenceDataModel> GetConference(string streamId);
+    }
 
+    public class CosmosDbProjectionService : ICosmosDbProjectionService
+    {
         private readonly Container _container;
 
-        public CosmosDbProjectionService()
+        public CosmosDbProjectionService(IOptions<Settings.CosmosSettings> options)
         {
-            var client = new CosmosClient(Endpoint, AuthKey);
-            _container = client.GetContainer(CosmosDatabaseId, ContainerId);
+            var cosmosSettings = options.Value;
+
+            var client = new CosmosClient(cosmosSettings.Endpoint, cosmosSettings.AuthKey);
+            _container = client.GetContainer(cosmosSettings.CosmosDatabaseId, cosmosSettings.ContainerId);
         }
 
         public async Task<List<ConferenceDataModel>> GetAllConferences()
@@ -47,6 +52,31 @@ namespace EventSourcing.CosmosDb.Services
             return conferences;
         }
 
+        public async Task<ConferenceDataModel> GetConference(string streamId)
+        {
+            var sqlQueryText = $"SELECT * FROM c WHERE c.partitionKey = 'Projections.Conference' AND c.id = 'conference-{streamId}'";
+
+            var queryDefinition = new QueryDefinition(sqlQueryText);
+
+            var queryResultSetIterator = _container.GetItemQueryIterator<CosmosEntities.ConferenceProjectionEntity>(queryDefinition);
+
+            var conference = new ConferenceDataModel();
+
+            while (queryResultSetIterator.HasMoreResults)
+            {
+                var currentResultSet = await queryResultSetIterator.ReadNextAsync();
+
+                conference =  currentResultSet.Select(document => new ConferenceDataModel
+                {
+                    Id = document.ConferenceDataModel.Id,
+                    Name = document.ConferenceDataModel.Name,
+                    Seats = document.ConferenceDataModel.Seats
+                }).SingleOrDefault();
+            }
+
+            return conference;
+        }
+
         public async Task CreateConferenceProjection(string streamId)
         {
             var sqlQueryText = $"SELECT * FROM Events c WHERE c.partitionKey = '{streamId}' ORDER BY c.sequenceNumber";
@@ -54,7 +84,7 @@ namespace EventSourcing.CosmosDb.Services
             var queryDefinition = new QueryDefinition(sqlQueryText);
 
             var queryResultSetIterator = _container.GetItemQueryIterator<CosmosEntities.ConferenceEntity>(queryDefinition);
-            
+
             var dataModel = new ConferenceDataModel();
 
             var lastSequenceRun = 0;

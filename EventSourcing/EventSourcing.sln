@@ -13,6 +13,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventSourcing.CosmosDb.Serv
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventSourcing.Web", "EventSourcing.Web\EventSourcing.Web.csproj", "{58DD0441-DC0F-45DD-B392-EA69E16C9017}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Table", "Table", "{0671BFE7-59C9-494D-8756-D492E40028C5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cosmos", "Cosmos", "{FA22A78A-7C4F-4531-8322-D51340B36CD0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventSourcing.Api", "EventSourcing.Api\EventSourcing.Api.csproj", "{10789F4A-6C0D-45BB-9F44-01C88F964FE7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,9 +45,18 @@ Global
 		{58DD0441-DC0F-45DD-B392-EA69E16C9017}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{58DD0441-DC0F-45DD-B392-EA69E16C9017}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{58DD0441-DC0F-45DD-B392-EA69E16C9017}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10789F4A-6C0D-45BB-9F44-01C88F964FE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10789F4A-6C0D-45BB-9F44-01C88F964FE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10789F4A-6C0D-45BB-9F44-01C88F964FE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10789F4A-6C0D-45BB-9F44-01C88F964FE7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5E28BD1B-3A7C-4912-9313-B88FA04CBF44} = {0671BFE7-59C9-494D-8756-D492E40028C5}
+		{55043003-898E-4664-ADA5-46FCC7EFB5DF} = {0671BFE7-59C9-494D-8756-D492E40028C5}
+		{FA0466DE-D3A8-47EC-81C6-A2ECE6E7E154} = {FA22A78A-7C4F-4531-8322-D51340B36CD0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E7415B28-1541-494E-A2FD-E70CC424D012}

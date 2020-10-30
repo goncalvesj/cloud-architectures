@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using EventSourcing.Common;
 using Microsoft.Azure.Cosmos;
+using Microsoft.Extensions.Options;
 
 namespace EventSourcing.CosmosDb.Services
 {
@@ -12,17 +13,14 @@ namespace EventSourcing.CosmosDb.Services
 
     public class CosmosDbConferenceService : IConferenceCosmosDbService
     {
-        private const string CosmosDatabaseId = "EventSourcing";
-        private const string ContainerId = "data";
-        private const string Endpoint = "https://localhost:8081/";
-        private const string AuthKey = "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==";
-
         private readonly Container _container;
 
-        public CosmosDbConferenceService()
+        public CosmosDbConferenceService(IOptions<Settings.CosmosSettings> options)
         {
-            var client = new CosmosClient(Endpoint, AuthKey);
-            _container = client.GetContainer(CosmosDatabaseId, ContainerId);
+            var cosmosSettings = options.Value;
+
+            var client = new CosmosClient(cosmosSettings.Endpoint, cosmosSettings.AuthKey);
+            _container = client.GetContainer(cosmosSettings.CosmosDatabaseId, cosmosSettings.ContainerId);
         }
 
         private string GetConferenceId(ConferenceModel model)
